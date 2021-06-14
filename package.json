@@ -1,0 +1,35 @@
+{
+  "name": "@hexlet/code",
+  "version": "0.0.1",
+  "description": "[![Actions Status](https://github.com/impedance/js-algorithms-project-lvl1/workflows/hexlet-check/badge.svg)](https://github.com/impedance/js-algorithms-project-lvl1/actions)",
+  "main": "index.js",
+  "bin": {
+    "nodejs-package": "bin/nodejs-package.js"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "npx jest --bail"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/impedance/js-algorithms-project-lvl1.git"
+  },
+  "author": "Alexander Inozemtsev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/impedance/js-algorithms-project-lvl1/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/impedance/js-algorithms-project-lvl1#readme",
+  "devDependencies": {
+    "@jest/globals": "^27.0.1",
+    "eslint": "^7.27.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.3",
+    "eslint-plugin-jest": "^24.3.6",
+    "jest": "^27.0.1",
+    "jest-cli": "^27.0.1"
+  }
+}
