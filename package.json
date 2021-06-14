@@ -10,7 +10,7 @@
     "node": ">=14"
   },
   "scripts": {
-    "test": "npx jest --bail"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,14 @@
   "type": "module",
   "homepage": "https://github.com/impedance/js-algorithms-project-lvl1#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.14.5",
     "@jest/globals": "^27.0.1",
+    "babel-jest": "^27.0.2",
     "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-jest": "^24.3.6",
-    "jest": "^27.0.1",
+    "jest": "^27.0.4",
     "jest-cli": "^27.0.1"
   }
 }
