@@ -1,4 +1,6 @@
 const buildSearchEngine = (documents) => ({
-  search: (searchPhrase) => ['doc1', 'doc2'],
+  documents,
+  search: (searchPhrase) => documents.filter(({ text }) => text.split(' ').includes(searchPhrase))
+    .map(({ id }) => id),
 });
 export default buildSearchEngine;
