@@ -12,6 +12,10 @@ test('finds documents', () => {
   expect(searchEngine.search('straight')).toEqual(['doc1']);
   // expect(searchEngine.search('shooter')).toEqual(['doc3']);
 });
-test.skip('returns empty result', () => {
-  expect(searchEngine.search('hello')).toEqual([]);
+
+const searchEngine2 = buildSearchEngine([]);
+
+test('returns empty result', () => {
+  expect(searchEngine2.search('hello')).toEqual([]);
+  expect(searchEngine2.search('')).toEqual([]);
 });
