@@ -1,5 +1,5 @@
-import { expect, test } from '@jest/globals';
-import buildSearchEngine from './searchEngine';
+const { expect, test } = require('@jest/globals');
+const buildSearchEngine = require('./searchEngine');
 
 const doc1 = { id: 'doc1', text: "I can't shoot straight unless I've had a pint!" };
 const doc2 = { id: 'doc2', text: "Don't shoot shoot shoot that thing at me." };
@@ -10,7 +10,11 @@ const searchEngine = buildSearchEngine(docs);
 test('finds documents', () => {
   expect(searchEngine.search('shoot')).toEqual(['doc1', 'doc2']);
   expect(searchEngine.search('straight')).toEqual(['doc1']);
-  // expect(searchEngine.search('shooter')).toEqual(['doc3']);
+  expect(searchEngine.search('shooter')).toEqual(['doc3']);
+  expect(searchEngine.search('pint')).toEqual(['doc1']);
+  expect(searchEngine.search('pint!')).toEqual(['doc1']);
+  expect(searchEngine.search('me.')).toEqual(['doc2']);
+  expect(searchEngine.search('apple')).toEqual([]);
 });
 
 const searchEngine2 = buildSearchEngine([]);
