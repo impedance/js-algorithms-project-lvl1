@@ -33,6 +33,7 @@ const buildSearchEngine = (documents) => ({
       return [];
     }
     const cleanedPhrase = getNormalizedWord(searchPhrase);
+
     const matchedDocs = documents.filter(({ text }) => {
       const words = text.split(' ');
       return words.some((word) => {
@@ -40,12 +41,15 @@ const buildSearchEngine = (documents) => ({
         return cleanedWord === cleanedPhrase;
       });
     });
+
     const relevanceResults = matchedDocs.reduce((acc, { id, text }) => {
       const words = text.split(' ');
-      return { ...acc, [id]: getNumberOfMatches(words, cleanedPhrase) };
-    }, {});
-    console.log(relevanceResults);
-    return matchedDocs.map(({ id }) => id);
+      return [...acc, { id, value: getNumberOfMatches(words, cleanedPhrase) }];
+    }, []);
+
+    relevanceResults.sort((a, b) => b.value - a.value);
+
+    return relevanceResults.map(({ id }) => id);
   },
 });
 module.exports = buildSearchEngine;
