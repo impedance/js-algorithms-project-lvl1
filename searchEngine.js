@@ -6,13 +6,14 @@ const getNormalizedWord = (word) => word.match(/\w+/g)[0];
 
 /**
  * @param {string[]} content
- * @param {string} phrase
+ * @param {string[]} searchPhrases
 */
-const getNumberOfMatches = (content, phrase) => {
+const getNumberOfMatches = (content, searchPhrases) => {
   let counter = 0;
   for (let i = 0; i < content.length; i += 1) {
-    const cleanedWord = getNormalizedWord(content[i]);
-    if (phrase === cleanedWord) {
+    const currentWord = content[i];
+    const cleanedWord = getNormalizedWord(currentWord);
+    if (searchPhrases.includes(cleanedWord)) {
       counter += 1;
     }
   }
@@ -32,22 +33,23 @@ const buildSearchEngine = (documents) => ({
     if (documents.length === 0) {
       return [];
     }
-    const cleanedPhrase = getNormalizedWord(searchPhrase);
+
+    const phrases = searchPhrase.split(' ');
+    const purePhrases = phrases.map(getNormalizedWord);
 
     const matchedDocs = documents.filter(({ text }) => {
       const words = text.split(' ');
       return words.some((word) => {
         const cleanedWord = getNormalizedWord(word);
-        return cleanedWord === cleanedPhrase;
+        return purePhrases.some((phrase) => phrase === cleanedWord);
       });
     });
 
     const relevanceResults = matchedDocs.reduce((acc, { id, text }) => {
       const words = text.split(' ');
-      return [...acc, { id, value: getNumberOfMatches(words, cleanedPhrase) }];
+      return [...acc, { id, count: getNumberOfMatches(words, phrases) }];
     }, []);
-
-    relevanceResults.sort((a, b) => b.value - a.value);
+    relevanceResults.sort((a, b) => b.count - a.count);
 
     return relevanceResults.map(({ id }) => id);
   },
