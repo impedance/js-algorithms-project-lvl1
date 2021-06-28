@@ -9,9 +9,10 @@ const searchEngine = buildSearchEngine(docs);
 
 test('finds documents', () => {
   expect(searchEngine.search('shoot')).toEqual(['doc2', 'doc1']);
+  expect(searchEngine.search('shoot at me')).toEqual(['doc2', 'doc1']);
   expect(searchEngine.search('straight')).toEqual(['doc1']);
   expect(searchEngine.search('I')).toEqual(['doc3', 'doc1', 'doc2']);
-  expect(searchEngine.search('shooter')).toEqual(['doc3']);
+  expect(searchEngine.search('I straight shooter')).toEqual(['doc3', 'doc1', 'doc2']);
   expect(searchEngine.search('pint')).toEqual(['doc1']);
   expect(searchEngine.search('pint!')).toEqual(['doc1']);
   expect(searchEngine.search('me.')).toEqual(['doc2']);
