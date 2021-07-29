@@ -4,15 +4,6 @@
  */
 const getNormalizedWord = (word) => word.match(/\w+/g)[0];
 
-// /**
-//  * @param {string} word
-//  * @param {Object} documents
-//  * @param {Object} indexedWords
-// */
-// const getWordRelevance = (word, documents, indexedWords) => {
-//   const result = indexedWords[word].docs.reduce((acc, { termFrequency }) => {
-// }, {});
-
 /**
  * @param {number} matchedDocsCount
  * @param {number} docsCount
@@ -92,33 +83,28 @@ const buildSearchEngine = (documents) => ({
         const { idf, docs } = wordsWithIdf[phrase];
         const idfiedDocs = docs.map(({ id, termFrequency }) => {
           const tfIdf = (termFrequency * idf).toPrecision(2);
-          return { id, tfIdf };
+          return { id, tfIdf: Number(tfIdf) };
         });
-        // const sortedDocs = docs.sort((first, next) => {
-        //   return (next.termFrequency * idf) - (first.termFrequency * idf);
-        // });
         return [...acc, ...idfiedDocs];
       }
       return acc;
     }, []);
-    console.log(matchedDocs);
 
-    matchedDocs.map((doc) => {
-      if(acc[doc]) {
-        
+    const relevancedDocs = matchedDocs.reduce((acc, doc) => {
+      const { id, tfIdf } = doc;
+      if (acc[id]) {
+        const newTfIdf = (acc[id] + tfIdf).toPrecision(2);
+        return { ...acc, [id]: Number(newTfIdf) };
       }
-    });
-    // const docsWithRelevance = matchedDocs.reduce((acc, { id, count }) => {
-    //   if (acc[id]) {
-    //     const { relevanceSum } = acc[id];
-    //     const newRelevanceSum = relevanceSum + count;
-    //     return { ...acc, [id]: { relevanceSum: newRelevanceSum } };
-    //   }
-    //   return { ...acc, [id]: { relevanceSum: count } };
-    // }, {});
-    // return Object.keys(docsWithRelevance).sort((a, b) => {
-    //   return docsWithRelevance[b].relevanceSum - docsWithRelevance[a].relevanceSum;
-    // });
+      return { ...acc, [id]: tfIdf };
+    }, {});
+    const docsWithAggregatedIdf = Object.keys(relevancedDocs).reduce((acc, key) => {
+      return [...acc, { id: key, tfIdf: relevancedDocs[key] }];
+    }, []);
+
+    docsWithAggregatedIdf.sort((first, next) => next.tfIdf - first.tfIdf);
+
+    return docsWithAggregatedIdf.map(({ id }) => id);
   },
 });
 module.exports = buildSearchEngine;
