@@ -43,10 +43,12 @@ const getInvertedIndex = (docs) => docs.reduce((acc, { id, text }) => {
   let newAcc = { ...acc };
   Object.keys(wordsToDocs).forEach((key) => {
     const docsContainsWord = wordsToDocs[key];
+    let newDocs = [];
     if (newAcc[key]) {
-      newAcc = { ...newAcc, [key]: { docs: [...newAcc[key].docs, ...docsContainsWord.docs] } };
+      newDocs = [...newAcc[key].docs];
+      newAcc = { ...newAcc, [key]: { docs: [...docsContainsWord.docs, ...newDocs] } };
     } else {
-      newAcc = { ...newAcc, [key]: { docs: [...docsContainsWord.docs] } };
+      newAcc = { ...newAcc, [key]: { docs: [...docsContainsWord.docs, ...newDocs] } };
     }
   });
   return newAcc;
@@ -75,7 +77,8 @@ const buildSearchEngine = (documents) => ({
       const matchedDocsCount = indexedWords[word].docs.length;
       const docsCount = documents.length;
       const idf = getInverseDocumentFrequency(matchedDocsCount, docsCount);
-      return { ...acc, [word]: { docs: [...indexedWords[word].docs], idf } };
+      const { docs } = indexedWords[word];
+      return { ...acc, [word]: { docs, idf } };
     }, {});
 
     const matchedDocs = purePhrases.reduce((acc, phrase) => {
